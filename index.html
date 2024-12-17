@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Fox Image</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHNxanhobjU0bmNkZ2V0dHRqMXozeG1yemMwMWZheG9veW8wc2I5diZlcD12MV9naWZzX3NlYXJjaCZjdD1n/doVwKiSsTD2QvquHaF/giphy.gif');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .fox-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .fox-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .fox-container button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .fox-container button:hover {
+            background-color: #45a049;
+        }
+
+        .loading {
+            font-size: 18px;
+            color: #888;
+        }
+
+        .error {
+            color: red;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="fox-container" id="fox-container">
+    <div class="loading" id="loading">Loading a fox image...</div>
+    <div class="error" id="error"></div>
+    <img id="fox-image" src="" alt="Fox Image">
+    <button id="new-fox">Get New Fox</button>
+</div>
+
+<script>
+    function fetchFoxImage() {
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const foxImage = document.getElementById('fox-image');
+        
+        loading.style.display = 'block';
+        error.style.display = 'none';
+        foxImage.src = '';
+
+        fetch('https://randomfox.ca/floof/')
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                foxImage.src = data.image;
+            })
+            .catch(() => {
+                loading.style.display = 'none';
+                error.textContent = 'There was an error fetching the fox image.';
+            });
+    }
+
+    window.onload = fetchFoxImage;
+
+    document.getElementById('new-fox').addEventListener('click', fetchFoxImage);
+</script>
+<script src="sw.js"></script>
+
+</body>
+</html>
